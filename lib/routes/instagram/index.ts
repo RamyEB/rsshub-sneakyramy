@@ -64,7 +64,9 @@ async function handler(ctx) {
         cookieJar = CookieJar.fromJSON(cookieJar);
     }
 
-    if (cookie && !(await checkLogin(cookieJar))) {
+    // Profile requests validate the session through getPage and the profile API.
+    // The separate SSO endpoint can reject a session that can still read profiles.
+    if (cookie && category !== 'user' && !(await checkLogin(cookieJar))) {
         throw new ConfigNotFoundError('Invalid cookie');
     }
 
