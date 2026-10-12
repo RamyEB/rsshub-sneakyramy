@@ -35,6 +35,15 @@ const getHeaders = async (cookieJar: CookieJar) => {
 };
 
 export const checkLogin = async (cookieJar: CookieJar) => {
+    // Minimal session cookies do not include the CSRF token required by the login check.
+    if (!(await getCSRFTokenFromJar(cookieJar))) {
+        const page = await ofetch.raw(`${baseUrl}/`, {
+            headers: { cookie: await cookieJar.getCookieString(baseUrl) },
+            responseType: 'text',
+        });
+        await Promise.all(page.headers.getSetCookie().map((cookie) => cookieJar.setCookie(cookie, baseUrl)));
+    }
+
     const response = await ofetch(`${baseUrl}/api/v1/web/fxcal/ig_sso_users/`, {
         headers: {
             'content-type': 'application/x-www-form-urlencoded',
