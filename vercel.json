@@ -1,6 +1,13 @@
 {
     "$schema": "https://openapi.vercel.sh/vercel.json",
     "framework": "hono",
+    "installCommand": "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 pnpm install --frozen-lockfile",
+    "buildCommand": "pnpm run vercel-build",
+    "env": {
+        "CACHE_TYPE": "memory",
+        "CACHE_EXPIRE": "3600",
+        "DISALLOW_ROBOT": "true"
+    },
     "outputDirectory": "src",
     "functions": {
         "src/server.mjs": {

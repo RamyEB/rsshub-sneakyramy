@@ -29,6 +29,7 @@ dist
 dist-container
 dist-lib
 dist-worker
+src/
 .vitest
 .wrangler
 
